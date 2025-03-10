@@ -1,0 +1,30 @@
+name: pull_tab_menu
+description: "A highly customizable pull tab menu system for Flutter apps with edge tab activation, smooth animations, and extensive customization options."
+version: 0.1.0
+homepage: https://github.com/intuosol/pull_tab_menu
+repository: https://github.com/intuosol/pull_tab_menu
+topics:
+  - ui
+  - interactive
+  - menu
+  - customizable
+  - flutter
+
+example:
+  path: example
+
+environment:
+  sdk: ^3.7.0
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.2.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
