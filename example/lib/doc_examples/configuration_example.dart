@@ -8,7 +8,7 @@ import 'package:pull_tab_menu/pull_tab_menu.dart';
 // #docregion config-options
 PullTabMenuConfiguration configuration = PullTabMenuConfiguration(
   // Position
-  menuPosition: MenuPosition.centerRight,
+  initialAlignment: MenuAlignment.centerRight,
 
   // Layout
   axis: Axis.horizontal,
@@ -17,7 +17,7 @@ PullTabMenuConfiguration configuration = PullTabMenuConfiguration(
   tabWidth: 50.0,
   tabHeight: 100.0,
   itemSize: 48.0,
-  railBreadth: 60.0,
+  menuBreadth: 60.0,
 
   // Colors
   baseColor: Colors.grey[900],

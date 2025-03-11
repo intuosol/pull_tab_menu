@@ -1,3 +1,14 @@
+## 0.1.1
+
+Bug fixes and enhancements:
+
+- Replaced TabPosition with new MenuAlignment enum offering six positioning options
+- Fixed automatic menu positioning and edge detection
+- Fixed menu animation when sliding in/out
+- Fixed issue with the assigned menu axis not overriding the default axis
+- Improved menu item rendering and tooltip positioning
+- Removed dependency on shared_preferences
+
 ## 0.1.0
 
 Initial release of the Pull Tab Menu package with the following features:

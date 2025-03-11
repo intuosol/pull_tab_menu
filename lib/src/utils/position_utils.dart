@@ -1,37 +1,39 @@
 import 'package:flutter/material.dart';
-import '../models/tab_position.dart';
+
+import '../models/menu_alignment.dart';
 
 /// Utility class for calculating positions for the pull tab menu.
 class PositionUtils {
-  /// Calculates the position of the tab based on the tab position enum.
-  static Offset calculateTabPosition(
-    MenuPosition position,
-    Size screenSize,
-    double tabWidth,
-    double tabHeight,
-  ) {
+  PositionUtils._();
+
+  /// Calculates the position of the tab based on the menu alignment enum.
+  static Offset calculateTabPosition({
+    required MenuAlignment alignment,
+    required Size screenSize,
+    required double menuLength,
+    required double totalWidth,
+  }) {
     double left = 0;
     double top = 0;
-
-    switch (position) {
-      case MenuPosition.topLeft:
+    switch (alignment) {
+      case MenuAlignment.topLeft:
         left = 0;
-        top = screenSize.height * 0.1;
-      case MenuPosition.centerLeft:
+        top = 0;
+      case MenuAlignment.centerLeft:
         left = 0;
-        top = (screenSize.height - tabHeight) / 2;
-      case MenuPosition.bottomLeft:
+        top = (screenSize.height - menuLength) / 2;
+      case MenuAlignment.bottomLeft:
         left = 0;
-        top = screenSize.height - tabHeight - screenSize.height * 0.1;
-      case MenuPosition.topRight:
-        left = screenSize.width - tabWidth;
-        top = screenSize.height * 0.1;
-      case MenuPosition.centerRight:
-        left = screenSize.width - tabWidth;
-        top = (screenSize.height - tabHeight) / 2;
-      case MenuPosition.bottomRight:
-        left = screenSize.width - tabWidth;
-        top = screenSize.height - tabHeight - screenSize.height * 0.1;
+        top = screenSize.height;
+      case MenuAlignment.topRight:
+        left = screenSize.width - totalWidth;
+        top = 0;
+      case MenuAlignment.centerRight:
+        left = screenSize.width - totalWidth;
+        top = (screenSize.height - menuLength) / 2;
+      case MenuAlignment.bottomRight:
+        left = screenSize.width - totalWidth;
+        top = screenSize.height;
     }
 
     return Offset(left, top);

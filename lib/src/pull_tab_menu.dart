@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'controllers/pull_tab_controller.dart';
 import 'models/menu_configuration.dart';
 import 'models/menu_item.dart';
-import 'models/tab_position.dart';
 import 'utils/position_utils.dart';
 import 'widgets/pull_tab.dart';
 
@@ -41,7 +40,6 @@ class _PullTabMenuState extends State<PullTabMenu>
   late PullTabController _controller;
   late AnimationController _animationController;
   late Animation<double> _animation;
-  Offset _tabPosition = Offset.zero;
   Timer? _autoHideTimer;
 
   late PullTabMenuConfiguration _configuration;
@@ -75,21 +73,6 @@ class _PullTabMenuState extends State<PullTabMenu>
     );
 
     _controller.addListener(_onControllerUpdate);
-
-    // Load saved tab position if dragging is allowed
-    if (_configuration.allowDragging) {
-      _loadSavedTabPosition();
-    }
-  }
-
-  Future<void> _loadSavedTabPosition() async {
-    final Map<String, double> savedPosition =
-        await _controller.loadTabPosition();
-    if (savedPosition['top'] != 0.0 || savedPosition['left'] != 0.0) {
-      setState(() {
-        _tabPosition = Offset(savedPosition['left']!, savedPosition['top']!);
-      });
-    }
   }
 
   @override
@@ -181,7 +164,7 @@ class _PullTabMenuState extends State<PullTabMenu>
     if (!_configuration.allowDragging) {
       return;
     }
-    _controller.setDragging(true);
+    _controller.isDragging = true;
   }
 
   void _onTabDragUpdate(DragUpdateDetails details) {
@@ -191,8 +174,8 @@ class _PullTabMenuState extends State<PullTabMenu>
 
     setState(() {
       final Offset newPosition = Offset(
-        _tabPosition.dx + details.delta.dx,
-        _tabPosition.dy + details.delta.dy,
+        _controller.position.dx + details.delta.dx,
+        _controller.position.dy + details.delta.dy,
       );
 
       // Make sure the tab doesn't go off-screen
@@ -209,14 +192,16 @@ class _PullTabMenuState extends State<PullTabMenu>
         0.0,
         screenSize.height - tabHeight,
       );
-      // switch edge if the tab exceeds half of the screen width
-      _configuration = _configuration.copyWith(
-        menuPosition: _configuration.menuPosition,
-      );
 
-      _tabPosition = Offset(constrainedX, constrainedY);
-      _controller.updateDragPosition(_tabPosition.dy);
+      _controller.position = Offset(constrainedX, constrainedY);
     });
+  }
+
+  void _onTabDragEnd() {
+    if (!_configuration.allowDragging) {
+      return;
+    }
+    _controller.isDragging = false;
   }
 
   @override
@@ -237,52 +222,41 @@ class _PullTabMenuState extends State<PullTabMenu>
         final double tabHeight = _configuration.tabHeight;
         final bool isVertical = _configuration.axis == Axis.vertical;
 
-        // Calculate the tab position based on the configuration
-        final Offset initialTabPosition =
-            _tabPosition == Offset.zero
-                ? PositionUtils.calculateTabPosition(
-                  _configuration.menuPosition,
-                  availableSpace,
-                  tabWidth,
-                  tabHeight,
-                )
-                : _tabPosition;
-
         // Determine edge that the tab is attached to
-        final bool isLeftEdge = _configuration.menuPosition.isLeft;
+        final bool isLeftEdge = _controller.isMenuOnLeftEdge(
+          availableSpace.width,
+        );
 
         // Calculate total width needed for menu + tab
         double menuWidth;
         double totalWidth;
 
         // Dynamically calculate menu height based on number of items
-        double calculatedMenuHeight;
+        double calculatedMenuLength;
 
         // Apply vertical padding from configuration
-        final double topPadding = _configuration.verticalPadding.top;
-        final double bottomPadding = _configuration.verticalPadding.bottom;
         final double availableHeight =
-            availableSpace.height - topPadding - bottomPadding;
+            availableSpace.height - _configuration.verticalPadding * 2;
 
         if (isVertical) {
           // Calculate width based on items
-          menuWidth = _configuration.railBreadth;
+          menuWidth = _configuration.menuBreadth;
           totalWidth = menuWidth + tabWidth;
 
           // Calculate height based on items, accounting for dividers
           double totalHeight = 0;
           for (final PullTabMenuItem item in _controller.menuItems) {
             if (item.isDivider) {
-              totalHeight += _configuration.dividerIndent * 2; // Divider height
+              totalHeight += _configuration.dividerIndent; // Divider height
             } else {
               totalHeight += _configuration.itemSize; // Regular item height
             }
           }
-          calculatedMenuHeight = totalHeight + 8; // Add padding
+          calculatedMenuLength = totalHeight + 8; // Add padding
 
           // Constrain to min/max size
-          calculatedMenuHeight = calculatedMenuHeight.clamp(
-            _configuration.minMenuSize,
+          calculatedMenuLength = calculatedMenuLength.clamp(
+            _configuration.itemSize,
             availableHeight * _configuration.maxMenuHeightFactor,
           );
         } else {
@@ -290,8 +264,7 @@ class _PullTabMenuState extends State<PullTabMenu>
           double totalItemWidth = 0;
           for (final PullTabMenuItem item in _controller.menuItems) {
             if (item.isDivider) {
-              totalItemWidth +=
-                  _configuration.dividerIndent * 2; // Divider width
+              totalItemWidth += _configuration.dividerIndent; // Divider width
             } else {
               totalItemWidth += _configuration.itemSize; // Regular item width
             }
@@ -300,14 +273,27 @@ class _PullTabMenuState extends State<PullTabMenu>
           totalWidth = menuWidth + tabWidth;
 
           // Calculate height based on items
-          calculatedMenuHeight = _configuration.railBreadth;
+          calculatedMenuLength = _configuration.menuBreadth;
 
           // Constrain to min/max size
           menuWidth = menuWidth.clamp(
-            _configuration.minMenuSize,
+            _configuration.menuBreadth,
             availableSpace.width * _configuration.maxMenuHeightFactor,
           );
         }
+
+        // Calculate the tab position based on the configuration
+        final Offset initialTabPosition =
+            _controller.position == Offset.zero
+                ? PositionUtils.calculateTabPosition(
+                  alignment: _configuration.initialAlignment,
+                  screenSize: availableSpace,
+                  menuLength: isVertical ? tabHeight : 0,
+                  totalWidth: totalWidth,
+                )
+                : _controller.position;
+
+        _controller.position = initialTabPosition;
 
         // Calculate the position of the menu
         double menuTop;
@@ -315,16 +301,20 @@ class _PullTabMenuState extends State<PullTabMenu>
         // Ensure the menu doesn't go off-screen vertically and respect vertical padding
         if (isVertical) {
           menuTop =
-              initialTabPosition.dy - (calculatedMenuHeight - tabHeight) / 2;
+              initialTabPosition.dy - (calculatedMenuLength - tabHeight) / 2;
           menuTop = menuTop.clamp(
-            topPadding,
-            availableSpace.height - calculatedMenuHeight - bottomPadding,
+            _configuration.verticalPadding,
+            availableSpace.height -
+                calculatedMenuLength -
+                _configuration.verticalPadding,
           );
         } else {
-          menuTop = initialTabPosition.dy - _configuration.railBreadth / 2;
+          menuTop = initialTabPosition.dy - _configuration.menuBreadth / 2;
           menuTop = menuTop.clamp(
-            topPadding,
-            availableSpace.height - _configuration.railBreadth - bottomPadding,
+            _configuration.verticalPadding,
+            availableSpace.height -
+                _configuration.menuBreadth -
+                _configuration.verticalPadding,
           );
         }
 
@@ -348,6 +338,7 @@ class _PullTabMenuState extends State<PullTabMenu>
                   );
                 },
               ),
+
             // Combined menu and tab that slides together
             Positioned(
               left: isLeftEdge ? 0 : null,
@@ -357,6 +348,7 @@ class _PullTabMenuState extends State<PullTabMenu>
                 tag: 'pull-tab-menu',
                 child: MouseRegion(
                   onHover: _onHover,
+                  hitTestBehavior: HitTestBehavior.translucent,
                   child: AnimatedBuilder(
                     animation: _animation,
                     builder: (BuildContext context, Widget? child) {
@@ -374,7 +366,7 @@ class _PullTabMenuState extends State<PullTabMenu>
                         offset: Offset(offsetX, 0),
                         child: SizedBox(
                           width: totalWidth,
-                          height: calculatedMenuHeight,
+                          height: calculatedMenuLength,
                           child: CustomMultiChildLayout(
                             delegate: _TabMenuLayoutDelegate(
                               isLeftEdge: isLeftEdge,
@@ -386,9 +378,8 @@ class _PullTabMenuState extends State<PullTabMenu>
                                 LayoutId(
                                   id: 'menu',
                                   child: _buildMenu(
-                                    menuPositionIsLeft:
-                                        _configuration.menuPosition.isLeft,
-                                    menuHeight: calculatedMenuHeight,
+                                    menuPositionIsLeft: isLeftEdge,
+                                    menuHeight: calculatedMenuLength,
                                     menuWidth: menuWidth,
                                   ),
                                 ),
@@ -403,6 +394,7 @@ class _PullTabMenuState extends State<PullTabMenu>
                                     onTap: _onTabTap,
                                     onDragStart: _onTabDragStart,
                                     onDragUpdate: _onTabDragUpdate,
+                                    onDragEnd: _onTabDragEnd,
                                   ),
                                 ),
                               ),
@@ -410,9 +402,8 @@ class _PullTabMenuState extends State<PullTabMenu>
                                 LayoutId(
                                   id: 'menu',
                                   child: _buildMenu(
-                                    menuPositionIsLeft:
-                                        _configuration.menuPosition.isLeft,
-                                    menuHeight: calculatedMenuHeight,
+                                    menuPositionIsLeft: isLeftEdge,
+                                    menuHeight: calculatedMenuLength,
                                     menuWidth: menuWidth,
                                   ),
                                 ),
@@ -439,7 +430,7 @@ class _PullTabMenuState extends State<PullTabMenu>
     return Material(
       color: Colors.transparent,
       child: Container(
-        width: _configuration.railBreadth,
+        width: _configuration.menuBreadth,
         height: menuHeight,
         decoration: BoxDecoration(
           color: _configuration
@@ -486,7 +477,7 @@ class _PullTabMenuState extends State<PullTabMenu>
 
     return Center(
       child: ListView.builder(
-        scrollDirection: _configuration.axis,
+        scrollDirection: _configuration.axis ?? Axis.vertical,
         itemCount: itemsToDisplay.length,
         shrinkWrap: true,
         itemBuilder: (BuildContext context, int index) {

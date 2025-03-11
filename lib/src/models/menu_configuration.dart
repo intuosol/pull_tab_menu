@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'tab_position.dart';
+
+import 'menu_alignment.dart';
 
 /// Configuration options for the pull tab menu.
 class PullTabMenuConfiguration {
   /// Creates a new menu configuration.
   const PullTabMenuConfiguration({
-    this.menuPosition = MenuPosition.centerRight,
-    this.axis = Axis.vertical,
+    this.initialAlignment = MenuAlignment.centerRight,
+    this.axis,
     this.tabWidth = 40.0,
     this.tabHeight = 80.0,
     this.baseColor,
@@ -22,45 +23,46 @@ class PullTabMenuConfiguration {
     this.borderRadius = 8.0,
     this.overlayOpacity = 0.5,
     this.useOverlay = true,
-    this.maxMenuHeightFactor = 0.7,
-    double? minMenuSize,
+    this.maxMenuHeightFactor = 0.9,
     this.itemSize = 48.0,
-    this.railBreadth = 60.0,
+    this.menuBreadth = 60.0,
     this.closeMenuOnTap = true,
     this.allowDragging = true,
     this.openOnTabHover = false,
     this.selectedItemBackgroundColor,
     this.selectedItemBorderColor,
-    this.verticalPadding = EdgeInsets.zero,
+    this.verticalPadding = 8.0,
     this.dividerThickness = 0.5,
     this.dividerIndent = 8.0,
-  }) : _minMenuSize = minMenuSize;
+  });
 
-  /// The position of the menu on the screen.
-  final MenuPosition menuPosition;
+  /// The initial alignment of the menu.
+  final MenuAlignment initialAlignment;
 
   /// The axis in which the items are displayed in the menu.
   /// Defaults to vertical, but will automatically use horizontal for fewer than 4 items
   /// unless explicitly specified.
-  final Axis axis;
+  final Axis? axis;
 
   /// The width of the tab.
   final double tabWidth;
 
   /// The height of the tab.
+  /// Defaults to [menuBreadth] if axis is horizontal.
   final double tabHeight;
 
   /// The base color used for both the menu and the tab if specific colors are not set.
   /// Defaults to theme's inverseSurface color.
   final Color? baseColor;
 
+  /// Gets the base color, defaulting to theme's inverseSurface color if not specified
+  Color getBaseColor(BuildContext context) {
+    return baseColor ?? Theme.of(context).colorScheme.inverseSurface;
+  }
+
   /// The color of the tab. If null, uses [baseColor].
   /// If both are null, defaults to theme's inverseSurface color.
   final Color? tabColor;
-
-  /// The opacity of the tab when the menu is closed.
-  /// Animates to [menuOpacity] when the menu is opened.
-  final double tabOpacity;
 
   /// Gets the tab color, using [baseColor] as fallback and then theme color
   Color getTabColor(BuildContext context) {
@@ -70,10 +72,9 @@ class PullTabMenuConfiguration {
     return getBaseColor(context);
   }
 
-  /// Gets the base color, defaulting to theme's inverseSurface color if not specified
-  Color getBaseColor(BuildContext context) {
-    return baseColor ?? Theme.of(context).colorScheme.inverseSurface;
-  }
+  /// The opacity of the tab when the menu is closed.
+  /// Animates to [menuOpacity] when the menu is opened.
+  final double tabOpacity;
 
   /// The opacity of the menu panel.
   final double menuOpacity;
@@ -113,15 +114,11 @@ class PullTabMenuConfiguration {
   /// Maximum menu height as a factor of screen height (0.0 to 1.0)
   final double maxMenuHeightFactor;
 
-  /// Minimum menu size in pixels for both width and height
-  final double? _minMenuSize;
-  double get minMenuSize => _minMenuSize ?? tabHeight;
-
   /// The size of each item in the menu
   final double itemSize;
 
-  /// The breadth of the rail
-  final double railBreadth;
+  /// The breadth of the menu
+  final double menuBreadth;
 
   /// Close the menu when an item is tapped
   final bool closeMenuOnTap;
@@ -139,7 +136,7 @@ class PullTabMenuConfiguration {
   final Color? selectedItemBorderColor;
 
   /// Vertical padding for the menu
-  final EdgeInsets verticalPadding;
+  final double verticalPadding;
 
   /// Thickness of dividers in the menu
   final double dividerThickness;
@@ -149,7 +146,7 @@ class PullTabMenuConfiguration {
 
   /// Creates a copy of this configuration with the given fields replaced.
   PullTabMenuConfiguration copyWith({
-    MenuPosition? menuPosition,
+    MenuAlignment? initialAlignment,
     Axis? axis,
     double? tabWidth,
     double? tabHeight,
@@ -171,19 +168,19 @@ class PullTabMenuConfiguration {
     double? maxMenuHeightFactor,
     double? minMenuSize,
     double? itemSize,
-    double? railBreadth,
+    double? menuBreadth,
     bool? closeMenuOnTap,
     bool? allowDragging,
     bool? openOnTabHover,
     bool? closeOnHoverExit,
     Color? selectedItemBackgroundColor,
     Color? selectedItemBorderColor,
-    EdgeInsets? verticalPadding,
+    double? verticalPadding,
     double? dividerThickness,
     double? dividerIndent,
   }) {
     return PullTabMenuConfiguration(
-      menuPosition: menuPosition ?? this.menuPosition,
+      initialAlignment: initialAlignment ?? this.initialAlignment,
       axis: axis ?? this.axis,
       tabWidth: tabWidth ?? this.tabWidth,
       tabHeight: tabHeight ?? this.tabHeight,
@@ -191,7 +188,7 @@ class PullTabMenuConfiguration {
       tabColor: tabColor ?? this.tabColor,
       tabOpacity: tabOpacity ?? this.tabOpacity,
       menuOpacity: menuOpacity ?? this.menuOpacity,
-      foregroundColor: foregroundColor ?? foregroundColor,
+      foregroundColor: foregroundColor ?? this.foregroundColor,
       autoHide: autoHide ?? this.autoHide,
       autoHideDelay: autoHideDelay ?? this.autoHideDelay,
       animationDuration: animationDuration ?? this.animationDuration,
@@ -201,9 +198,8 @@ class PullTabMenuConfiguration {
       overlayOpacity: overlayOpacity ?? this.overlayOpacity,
       useOverlay: useOverlay ?? this.useOverlay,
       maxMenuHeightFactor: maxMenuHeightFactor ?? this.maxMenuHeightFactor,
-      minMenuSize: minMenuSize ?? _minMenuSize,
       itemSize: itemSize ?? this.itemSize,
-      railBreadth: railBreadth ?? this.railBreadth,
+      menuBreadth: menuBreadth ?? this.menuBreadth,
       closeMenuOnTap: closeMenuOnTap ?? this.closeMenuOnTap,
       allowDragging: allowDragging ?? this.allowDragging,
       openOnTabHover: openOnTabHover ?? this.openOnTabHover,

@@ -14,31 +14,31 @@ class _CustomizedExampleState extends State<CustomizedExample> {
   final PullTabController _controller = PullTabController();
 
   // Default configuration values
-  static const MenuPosition kDefaultMenuPosition = MenuPosition.bottomLeft;
+  static const MenuAlignment kDefaultMenuAlignment = MenuAlignment.bottomLeft;
   static const Axis kDefaultAxis = Axis.vertical;
   static const double kDefaultTabWidth = 50.0;
   static const double kDefaultTabHeight = 100.0;
   static const double kDefaultTabOpacity = 0.7;
   static const double kDefaultMenuOpacity = 1.0;
-  static const bool kDefaultAutoHide = true;
-  static const Duration kDefaultAutoHideDelay = Duration(seconds: 3);
+  static const bool kDefaultAutoHide = false;
+  static const Duration kDefaultAutoHideDelay = Duration(seconds: 1);
   static const Duration kDefaultAnimationDuration = Duration(milliseconds: 400);
   static const Curve kDefaultAnimationCurve = Curves.easeOutBack;
   static const double kDefaultElevation = 8.0;
   static const double kDefaultBorderRadius = 16.0;
   static const double kDefaultOverlayOpacity = 0.5;
-  static const bool kDefaultUseOverlay = true;
-  static const double kDefaultMaxMenuHeightFactor = 0.7;
+  static const bool kDefaultUseOverlay = false;
+  static const double kDefaultMaxMenuHeightFactor = 0.95;
   static const double kDefaultItemSize = 48.0;
-  static const double kDefaultRailBreadth = 60.0;
+  static const double kDefaultMenuBreadth = 60.0;
   static const bool kDefaultCloseMenuOnTap = true;
   static const bool kDefaultAllowDragging = true;
-  static const bool kDefaultOpenOnTabHover = true;
+  static const bool kDefaultOpenOnTabHover = false;
   static const double kDefaultDividerThickness = 0.5;
   static const double kDefaultDividerIndent = 8.0;
 
   // Configuration options
-  MenuPosition _menuPosition = kDefaultMenuPosition;
+  MenuAlignment _menuAlignment = kDefaultMenuAlignment;
   Axis _axis = kDefaultAxis;
   double _tabWidth = kDefaultTabWidth;
   double _tabHeight = kDefaultTabHeight;
@@ -57,7 +57,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
   bool _useOverlay = kDefaultUseOverlay;
   double _maxMenuHeightFactor = kDefaultMaxMenuHeightFactor;
   double _itemSize = kDefaultItemSize;
-  double _railBreadth = kDefaultRailBreadth;
+  double _menuBreadth = kDefaultMenuBreadth;
   bool _closeMenuOnTap = kDefaultCloseMenuOnTap;
   bool _allowDragging = kDefaultAllowDragging;
   bool _openOnTabHover = kDefaultOpenOnTabHover;
@@ -73,7 +73,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
     _foregroundColor = Colors.white;
 
     Future<void>.delayed(
-      Durations.short2,
+      Duration.zero,
       () => setState(() {
         _controller.openMenu();
       }),
@@ -117,54 +117,47 @@ class _CustomizedExampleState extends State<CustomizedExample> {
           CustomSnackBar.of(context).showMessage('Profile tapped');
         },
       ),
-      PullTabMenuItem(
-        label: 'Settings',
-        icon: Icons.settings,
-        onTap: () {
-          CustomSnackBar.of(context).showMessage('Settings tapped');
-        },
-      ),
     ];
 
-    return PullTabMenu(
-      menuItems: menuItems,
-      controller: _controller,
-      configuration: PullTabMenuConfiguration(
-        menuPosition: _menuPosition,
-        axis: _axis,
-        tabWidth: _tabWidth,
-        tabHeight: _tabHeight,
-        baseColor: _baseColor,
-        tabColor: _tabColor,
-        tabOpacity: _tabOpacity,
-        menuOpacity: _menuOpacity,
-        foregroundColor: _foregroundColor,
-        autoHide: _autoHide,
-        autoHideDelay: _autoHideDelay,
-        animationDuration: _animationDuration,
-        animationCurve: _animationCurve,
-        elevation: _elevation,
-        borderRadius: _borderRadius,
-        overlayOpacity: _overlayOpacity,
-        useOverlay: _useOverlay,
-        maxMenuHeightFactor: _maxMenuHeightFactor,
-        itemSize: _itemSize,
-        railBreadth: _railBreadth,
-        closeMenuOnTap: _closeMenuOnTap,
-        allowDragging: _allowDragging,
-        openOnTabHover: _openOnTabHover,
-        dividerThickness: _dividerThickness,
-        dividerIndent: _dividerIndent,
-      ),
-      child: Theme(
-        data: ThemeData.light(useMaterial3: true),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Customizable Menu'),
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
+    return Theme(
+      data: ThemeData.light(useMaterial3: true),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Customizable Menu'),
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+        ),
+        body: PullTabMenu(
+          menuItems: menuItems,
+          controller: _controller,
+          configuration: PullTabMenuConfiguration(
+            initialAlignment: _menuAlignment,
+            axis: _axis,
+            tabWidth: _tabWidth,
+            tabHeight: _tabHeight,
+            baseColor: _baseColor,
+            tabColor: _tabColor,
+            tabOpacity: _tabOpacity,
+            menuOpacity: _menuOpacity,
+            foregroundColor: _foregroundColor,
+            autoHide: _autoHide,
+            autoHideDelay: _autoHideDelay,
+            animationDuration: _animationDuration,
+            animationCurve: _animationCurve,
+            elevation: _elevation,
+            borderRadius: _borderRadius,
+            overlayOpacity: _overlayOpacity,
+            useOverlay: _useOverlay,
+            maxMenuHeightFactor: _maxMenuHeightFactor,
+            itemSize: _itemSize,
+            menuBreadth: _menuBreadth,
+            closeMenuOnTap: _closeMenuOnTap,
+            allowDragging: _allowDragging,
+            openOnTabHover: _openOnTabHover,
+            dividerThickness: _dividerThickness,
+            dividerIndent: _dividerIndent,
           ),
-          body: Container(
+          child: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -188,11 +181,11 @@ class _CustomizedExampleState extends State<CustomizedExample> {
                     ),
                     const SizedBox(height: 16),
                     _buildConfigSection(
-                      'Menu Position',
-                      _buildPositionSelector(),
+                      'Menu Alignment',
+                      _buildAlignmentSelector(),
                       onReset:
                           () => setState(() {
-                            _menuPosition = kDefaultMenuPosition;
+                            _menuAlignment = kDefaultMenuAlignment;
                           }),
                     ),
                     _buildConfigSection(
@@ -211,7 +204,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
                             _tabWidth = kDefaultTabWidth;
                             _tabHeight = kDefaultTabHeight;
                             _itemSize = kDefaultItemSize;
-                            _railBreadth = kDefaultRailBreadth;
+                            _menuBreadth = kDefaultMenuBreadth;
                           }),
                     ),
                     _buildConfigSection(
@@ -326,29 +319,29 @@ class _CustomizedExampleState extends State<CustomizedExample> {
     );
   }
 
-  Widget _buildPositionSelector() {
+  Widget _buildAlignmentSelector() {
     return Wrap(
       spacing: 8,
       runSpacing: 8,
       children: <Widget>[
-        _buildPositionChip(MenuPosition.topLeft, 'Top Left'),
-        _buildPositionChip(MenuPosition.centerLeft, 'Center Left'),
-        _buildPositionChip(MenuPosition.bottomLeft, 'Bottom Left'),
-        _buildPositionChip(MenuPosition.topRight, 'Top Right'),
-        _buildPositionChip(MenuPosition.centerRight, 'Center Right'),
-        _buildPositionChip(MenuPosition.bottomRight, 'Bottom Right'),
+        _buildAlignmentChip(MenuAlignment.topLeft, 'Top Left'),
+        _buildAlignmentChip(MenuAlignment.centerLeft, 'Center Left'),
+        _buildAlignmentChip(MenuAlignment.bottomLeft, 'Bottom Left'),
+        _buildAlignmentChip(MenuAlignment.topRight, 'Top Right'),
+        _buildAlignmentChip(MenuAlignment.centerRight, 'Center Right'),
+        _buildAlignmentChip(MenuAlignment.bottomRight, 'Bottom Right'),
       ],
     );
   }
 
-  Widget _buildPositionChip(MenuPosition position, String label) {
+  Widget _buildAlignmentChip(MenuAlignment alignment, String label) {
     return FilterChip(
-      selected: _menuPosition == position,
+      selected: _menuAlignment == alignment,
       label: Text(label),
       onSelected: (bool selected) {
         if (selected) {
           setState(() {
-            _menuPosition = position;
+            _menuAlignment = alignment;
           });
         }
       },
@@ -420,11 +413,14 @@ class _CustomizedExampleState extends State<CustomizedExample> {
                 max: 200,
                 divisions: 16,
                 label: _tabHeight.toStringAsFixed(1),
-                onChanged: (double value) {
-                  setState(() {
-                    _tabHeight = value;
-                  });
-                },
+                onChanged:
+                    _axis == Axis.horizontal
+                        ? null
+                        : (double value) {
+                          setState(() {
+                            _tabHeight = value;
+                          });
+                        },
               ),
             ),
             SizedBox(width: 50, child: Text('${_tabHeight.toInt()}px')),
@@ -452,22 +448,22 @@ class _CustomizedExampleState extends State<CustomizedExample> {
         ),
         Row(
           children: <Widget>[
-            const SizedBox(width: 100, child: Text('Rail Breadth:')),
+            const SizedBox(width: 100, child: Text('Menu Breadth:')),
             Expanded(
               child: Slider(
-                value: _railBreadth,
+                value: _menuBreadth,
                 min: 40,
                 max: 120,
                 divisions: 16,
-                label: _railBreadth.toStringAsFixed(1),
+                label: _menuBreadth.toStringAsFixed(1),
                 onChanged: (double value) {
                   setState(() {
-                    _railBreadth = value;
+                    _menuBreadth = value;
                   });
                 },
               ),
             ),
-            SizedBox(width: 50, child: Text('${_railBreadth.toInt()}px')),
+            SizedBox(width: 50, child: Text('${_menuBreadth.toInt()}px')),
           ],
         ),
       ],
@@ -767,8 +763,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
     return Column(
       children: <Widget>[
         ListTile(
-          title: const Text('Animation Duration'),
-          subtitle: Text('${_animationDuration.inMilliseconds} ms'),
+          title: const Text('Animation Duration:'),
           trailing: DropdownButton<Duration>(
             value: _animationDuration,
             onChanged: (Duration? value) {
@@ -809,8 +804,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
           ),
         ),
         ListTile(
-          title: const Text('Animation Curve'),
-          subtitle: Text(_getCurveName(_animationCurve)),
+          title: const Text('Animation Curve:'),
           trailing: DropdownButton<Curve>(
             value: _animationCurve,
             onChanged: (Curve? value) {
@@ -862,40 +856,9 @@ class _CustomizedExampleState extends State<CustomizedExample> {
     );
   }
 
-  String _getCurveName(Curve curve) {
-    if (curve == Curves.linear) {
-      return 'Linear';
-    }
-    if (curve == Curves.easeIn) {
-      return 'Ease In';
-    }
-    if (curve == Curves.easeOut) {
-      return 'Ease Out';
-    }
-    if (curve == Curves.easeInOut) {
-      return 'Ease In Out';
-    }
-    if (curve == Curves.elasticIn) {
-      return 'Elastic In';
-    }
-    if (curve == Curves.elasticOut) {
-      return 'Elastic Out';
-    }
-    if (curve == Curves.bounceIn) {
-      return 'Bounce In';
-    }
-    if (curve == Curves.bounceOut) {
-      return 'Bounce Out';
-    }
-    if (curve == Curves.easeOutBack) {
-      return 'Ease Out Back';
-    }
-    return 'Custom';
-  }
-
   void _resetAllSettings() {
     setState(() {
-      _menuPosition = kDefaultMenuPosition;
+      _menuAlignment = kDefaultMenuAlignment;
       _axis = kDefaultAxis;
       _tabWidth = kDefaultTabWidth;
       _tabHeight = kDefaultTabHeight;
@@ -914,7 +877,7 @@ class _CustomizedExampleState extends State<CustomizedExample> {
       _useOverlay = kDefaultUseOverlay;
       _maxMenuHeightFactor = kDefaultMaxMenuHeightFactor;
       _itemSize = kDefaultItemSize;
-      _railBreadth = kDefaultRailBreadth;
+      _menuBreadth = kDefaultMenuBreadth;
       _closeMenuOnTap = kDefaultCloseMenuOnTap;
       _allowDragging = kDefaultAllowDragging;
       _openOnTabHover = kDefaultOpenOnTabHover;
@@ -976,7 +939,6 @@ class _CustomizedExampleState extends State<CustomizedExample> {
               child: Slider(
                 value: _maxMenuHeightFactor,
                 min: 0.3,
-                max: 0.9,
                 divisions: 6,
                 label: '${(_maxMenuHeightFactor * 100).toInt()}%',
                 onChanged: (double value) {

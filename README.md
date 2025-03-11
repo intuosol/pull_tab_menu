@@ -139,8 +139,8 @@ The `PullTabMenuConfiguration` class provides extensive customization options:
 
 ```dart
 PullTabMenuConfiguration(
-  // Position
-  menuPosition: MenuPosition.centerRight,
+  // Menu Alignment
+  initialAlignment: MenuAlignment.centerRight,
 
   // Layout
   axis: Axis.horizontal,
@@ -149,7 +149,7 @@ PullTabMenuConfiguration(
   tabWidth: 50.0,
   tabHeight: 100.0,
   itemSize: 48.0,
-  railBreadth: 60.0,
+  menuBreadth: 60.0,
 
   // Colors
   baseColor: Colors.grey[900]!,
@@ -184,16 +184,16 @@ PullTabMenuConfiguration(
 );
 ```
 
-## Menu Positions
+## Menu Alignments
 
 The menu can be positioned at various points along the screen edges:
 
-- `MenuPosition.topLeft`
-- `MenuPosition.centerLeft`
-- `MenuPosition.bottomLeft`
-- `MenuPosition.topRight`
-- `MenuPosition.centerRight`
-- `MenuPosition.bottomRight`
+- `MenuAlignment.topLeft`
+- `MenuAlignment.centerLeft`
+- `MenuAlignment.bottomLeft`
+- `MenuAlignment.topRight`
+- `MenuAlignment.centerRight`
+- `MenuAlignment.bottomRight`
 
 ## Auto Layout
 

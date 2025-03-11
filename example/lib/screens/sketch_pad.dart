@@ -14,21 +14,8 @@ class _SketchPadState extends State<SketchPad> {
   double strokeWidth = 5.0;
   final List<DrawingLine> lines = <DrawingLine>[];
   final List<DrawingLine> undoLines = <DrawingLine>[];
-  final PullTabController _controller = PullTabController();
 
   int _menuIndex = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() {
-      if (!_controller.isMenuOpen) {
-        setState(() {
-          _menuIndex = 0;
-        });
-      }
-    });
-  }
 
   List<PullTabMenuItem> _mainMenuItems() {
     return <PullTabMenuItem>[
@@ -40,7 +27,6 @@ class _SketchPadState extends State<SketchPad> {
             () => setState(() {
               undoLines.addAll(lines);
               lines.clear();
-              _controller.closeMenu();
             }),
       ),
       PullTabMenuItem(
@@ -90,11 +76,6 @@ class _SketchPadState extends State<SketchPad> {
   }
 
   List<PullTabMenuItem> _colorMenuItems() {
-    void onColorTap(Color color) => setState(() {
-      selectedColor = color;
-      _controller.closeMenu();
-    });
-
     return <PullTabMenuItem>[
       PullTabMenuItem(
         label: 'Return',
@@ -111,38 +92,33 @@ class _SketchPadState extends State<SketchPad> {
         icon: Icons.circle,
         iconColor: Colors.white,
         isSelected: selectedColor == Colors.white,
-        onTap: () => onColorTap(Colors.white),
+        onTap: () => setState(() => selectedColor = Colors.white),
       ),
       PullTabMenuItem(
         label: 'Red',
         icon: Icons.circle,
         iconColor: Colors.red,
         isSelected: selectedColor == Colors.red,
-        onTap: () => onColorTap(Colors.red),
+        onTap: () => setState(() => selectedColor = Colors.red),
       ),
       PullTabMenuItem(
         label: 'Blue',
         icon: Icons.circle,
         iconColor: Colors.blue,
         isSelected: selectedColor == Colors.blue,
-        onTap: () => onColorTap(Colors.blue),
+        onTap: () => setState(() => selectedColor = Colors.blue),
       ),
       PullTabMenuItem(
         label: 'Green',
         icon: Icons.circle,
         iconColor: Colors.green,
         isSelected: selectedColor == Colors.green,
-        onTap: () => onColorTap(Colors.green),
+        onTap: () => setState(() => selectedColor = Colors.green),
       ),
     ];
   }
 
   List<PullTabMenuItem> _strokeMenuItems() {
-    void onStrokeTap(double strokeWidth) => setState(() {
-      this.strokeWidth = strokeWidth;
-      _controller.closeMenu();
-    });
-
     return <PullTabMenuItem>[
       PullTabMenuItem(
         label: 'Return',
@@ -158,19 +134,19 @@ class _SketchPadState extends State<SketchPad> {
         label: 'Thin Stroke',
         icon: Symbols.pen_size_1,
         isSelected: strokeWidth == 1.0,
-        onTap: () => onStrokeTap(1.0),
+        onTap: () => setState(() => strokeWidth = 1.0),
       ),
       PullTabMenuItem(
         label: 'Medium Stroke',
         icon: Symbols.pen_size_2,
         isSelected: strokeWidth == 5.0,
-        onTap: () => onStrokeTap(5.0),
+        onTap: () => setState(() => strokeWidth = 5.0),
       ),
       PullTabMenuItem(
         label: 'Thick Stroke',
         icon: Symbols.pen_size_4,
         isSelected: strokeWidth == 10.0,
-        onTap: () => onStrokeTap(10.0),
+        onTap: () => setState(() => strokeWidth = 10.0),
       ),
     ];
   }
@@ -180,13 +156,13 @@ class _SketchPadState extends State<SketchPad> {
     return Scaffold(
       appBar: AppBar(title: const Text('Draw Pad')),
       body: PullTabMenu(
-        controller: _controller,
         configuration: PullTabMenuConfiguration(
           baseColor: Theme.of(context).colorScheme.primaryContainer,
           foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
-          menuPosition: MenuPosition.topLeft,
+          initialAlignment: MenuAlignment.topLeft,
           axis: Axis.horizontal,
           closeMenuOnTap: false,
+          useOverlay: false,
         ),
         menuItems:
             _menuIndex == 0

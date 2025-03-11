@@ -9,7 +9,7 @@ void main() {
 
       expect(controller.isMenuOpen, false);
       expect(controller.isDragging, false);
-      expect(controller.dragPosition, 0.0);
+      expect(controller.position, Offset.zero);
       expect(controller.menuItems, isEmpty);
     });
 
@@ -104,22 +104,22 @@ void main() {
       const PullTabMenuConfiguration defaultConfig = PullTabMenuConfiguration();
 
       final PullTabMenuConfiguration updatedConfig = defaultConfig.copyWith(
-        menuPosition: MenuPosition.bottomLeft,
+        initialAlignment: MenuAlignment.bottomLeft,
         tabColor: Colors.red,
-        railBreadth: 80.0,
+        menuBreadth: 80.0,
         maxMenuHeightFactor: 0.5,
       );
 
       // Original values should not change
-      expect(defaultConfig.menuPosition, MenuPosition.centerRight);
+      expect(defaultConfig.initialAlignment, MenuAlignment.centerRight);
       expect(defaultConfig.tabColor, null);
-      expect(defaultConfig.railBreadth, 60.0);
-      expect(defaultConfig.maxMenuHeightFactor, 0.7);
+      expect(defaultConfig.menuBreadth, 60.0);
+      expect(defaultConfig.maxMenuHeightFactor, 0.9);
 
       // New values should be updated
-      expect(updatedConfig.menuPosition, MenuPosition.bottomLeft);
+      expect(updatedConfig.initialAlignment, MenuAlignment.bottomLeft);
       expect(updatedConfig.tabColor, Colors.red);
-      expect(updatedConfig.railBreadth, 80.0);
+      expect(updatedConfig.menuBreadth, 80.0);
       expect(updatedConfig.maxMenuHeightFactor, 0.5);
 
       // Other values should remain the same
@@ -131,8 +131,8 @@ void main() {
       const PullTabMenuConfiguration defaultConfig = PullTabMenuConfiguration();
 
       // Check default values
-      expect(defaultConfig.menuPosition, MenuPosition.centerRight);
-      expect(defaultConfig.axis, Axis.vertical);
+      expect(defaultConfig.initialAlignment, MenuAlignment.centerRight);
+      expect(defaultConfig.axis, null);
       expect(defaultConfig.tabWidth, 40.0);
       expect(defaultConfig.tabHeight, 80.0);
       expect(defaultConfig.baseColor, null);
@@ -142,14 +142,14 @@ void main() {
       expect(defaultConfig.foregroundColor, null);
       expect(defaultConfig.autoHide, false);
       expect(defaultConfig.autoHideDelay, const Duration(seconds: 3));
-      expect(defaultConfig.maxMenuHeightFactor, 0.7);
+      expect(defaultConfig.maxMenuHeightFactor, 0.9);
       expect(defaultConfig.itemSize, 48.0);
-      expect(defaultConfig.railBreadth, 60.0);
+      expect(defaultConfig.menuBreadth, 60.0);
     });
 
     test('PullTabMenuConfiguration custom values', () {
       const PullTabMenuConfiguration customConfig = PullTabMenuConfiguration(
-        menuPosition: MenuPosition.topLeft,
+        initialAlignment: MenuAlignment.topLeft,
         axis: Axis.horizontal,
         tabWidth: 50.0,
         tabHeight: 100.0,
@@ -162,12 +162,12 @@ void main() {
         autoHideDelay: Duration(seconds: 5),
         maxMenuHeightFactor: 0.5,
         itemSize: 60.0,
-        railBreadth: 80.0,
+        menuBreadth: 80.0,
         dividerThickness: 1.0,
         dividerIndent: 16.0,
       );
 
-      expect(customConfig.menuPosition, MenuPosition.topLeft);
+      expect(customConfig.initialAlignment, MenuAlignment.topLeft);
       expect(customConfig.axis, Axis.horizontal);
       expect(customConfig.tabWidth, 50.0);
       expect(customConfig.tabHeight, 100.0);
@@ -180,7 +180,7 @@ void main() {
       expect(customConfig.autoHideDelay, const Duration(seconds: 5));
       expect(customConfig.maxMenuHeightFactor, 0.5);
       expect(customConfig.itemSize, 60.0);
-      expect(customConfig.railBreadth, 80.0);
+      expect(customConfig.menuBreadth, 80.0);
       expect(customConfig.dividerThickness, 1.0);
       expect(customConfig.dividerIndent, 16.0);
     });

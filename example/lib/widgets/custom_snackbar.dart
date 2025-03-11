@@ -17,12 +17,11 @@ class CustomSnackBar {
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(
-            color: Theme.of(_context).colorScheme.onInverseSurface,
-          ),
+          style: TextStyle(color: Theme.of(_context).colorScheme.onSurface),
         ),
-        backgroundColor: Theme.of(_context).colorScheme.inverseSurface,
+        backgroundColor: Theme.of(_context).colorScheme.surface,
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         duration: Durations.long4,
       ),
     );
