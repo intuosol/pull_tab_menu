@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intuosol_design_system/intuosol_design_system.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:pull_tab_menu/pull_tab_menu.dart';
-import 'screens/customized_example.dart';
-import 'screens/sketch_pad.dart';
-import 'theme/app_theme.dart';
+import 'features/customizer/customizer.dart';
+import 'features/sketch_pad.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,12 +14,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return IntuoSolApp(
       title: 'Pull Tab Menu Example',
-      darkTheme: AppTheme.darkTheme,
       home: const MyHomePage(),
       routes: <String, WidgetBuilder>{
-        '/customized': (BuildContext context) => const CustomizedExample(),
+        '/customizer': (BuildContext context) => const PullTabMenuCustomizer(),
         '/sketchpad': (BuildContext context) => const SketchPad(),
       },
     );
@@ -41,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Give the user a quick peek of the menu to show they can open/close it
     Future<void>.delayed(Durations.short2, () => _controller.openMenu()).then(
       (_) =>
-          Future<void>.delayed(Durations.long2, () => _controller.closeMenu()),
+          Future<void>.delayed(Durations.long4, () => _controller.closeMenu()),
     );
     super.initState();
   }
@@ -49,70 +48,100 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // The actual implementation
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Pull Tab Menu Examples'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
+    return IntuoSolScaffold(
+      appBar: AppBar(title: const Text('Pull Tab Menu')),
       body: PullTabMenu(
         controller: _controller,
         menuItems: <PullTabMenuItem>[
           PullTabMenuItem(
-            label: 'Sketch Pad Example',
+            label: 'Sketch Pad',
             icon: Symbols.draw,
             onTap: () {
               Navigator.pushNamed(context, '/sketchpad');
             },
           ),
+          const PullTabMenuItem.divider(),
           PullTabMenuItem(
-            label: 'Customized Example',
+            label: 'Customizer',
             icon: Icons.style_outlined,
             onTap: () {
-              Navigator.pushNamed(context, '/customized');
+              Navigator.pushNamed(context, '/customizer');
             },
           ),
         ],
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: <Widget>[
-              const Spacer(),
-              Text(
-                'Select an Example',
-                style: Theme.of(context).textTheme.titleLarge,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 400,
+                minHeight: MediaQuery.of(context).size.height,
               ),
-              const Divider(),
-              const SizedBox(height: 20),
-
-              _buildExampleButton(
-                context: context,
-                title: 'Sketch Pad Example',
-                icon: Symbols.draw,
-                description:
-                    'Draw on the screen, use the menu to select drawing options',
-                route: '/sketchpad',
+              child: Column(
+                children: <Widget>[
+                  const SizedBox(height: 24),
+                  const IntuoSolSectionHeader(
+                    title: 'Select an Example',
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                  _buildMenuOption(
+                    context: context,
+                    title: 'Sketch Pad',
+                    icon: Symbols.draw,
+                    subtitle:
+                        'Draw on the screen, use the menu for more options.',
+                    onTap: () => Navigator.pushNamed(context, '/sketchpad'),
+                  ),
+                  _buildMenuOption(
+                    context: context,
+                    title: 'Customizer',
+                    icon: Icons.style_outlined,
+                    subtitle: 'Customize the menu appearance and behavior.',
+                    onTap: () => Navigator.pushNamed(context, '/customizer'),
+                  ),
+                  const SizedBox(height: 24),
+                  const IntuoSolSectionHeader(
+                    title: 'More Info',
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                  ),
+                  _buildMenuOption(
+                    context: context,
+                    title: 'Pub.dev',
+                    icon: Symbols.package_2,
+                    subtitle: 'View the package on pub.dev.',
+                    onTap: () => RedirectHandler.openPackage('pull_tab_menu'),
+                  ),
+                  _buildMenuOption(
+                    context: context,
+                    title: 'API Reference',
+                    icon: Symbols.docs,
+                    subtitle: 'Read the documentation.',
+                    onTap:
+                        () => RedirectHandler.openPackageDocumentation(
+                          'pull_tab_menu',
+                        ),
+                  ),
+                ],
               ),
-              _buildExampleButton(
-                context: context,
-                title: 'Customized Example',
-                icon: Icons.style_outlined,
-                description: 'Customize the menu appearance and behavior',
-                route: '/customized',
-              ),
-              const Spacer(flex: 3),
-            ],
+            ),
           ),
         ),
+      ),
+      floatingActionButton: IntuoSolButtons.floatingAboutPackage(
+        context: context,
+        packageName: 'pull_tab_menu',
+        description:
+            "PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.",
       ),
     );
   }
 
-  Widget _buildExampleButton({
-    required String title,
-    required IconData icon,
-    required String description,
-    required String route,
+  Widget _buildMenuOption({
     required BuildContext context,
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Function() onTap,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
@@ -120,11 +149,11 @@ class _MyHomePageState extends State<MyHomePage> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         tileColor: Theme.of(
           context,
-        ).colorScheme.inverseSurface.withValues(alpha: 0.01),
-        onTap: () => Navigator.pushNamed(context, route),
+        ).colorScheme.inverseSurface.withValues(alpha: 0.02),
+        onTap: onTap,
         leading: Icon(icon),
         title: Text(title),
-        subtitle: Text(description),
+        subtitle: Text(subtitle),
       ),
     );
   }

@@ -43,6 +43,10 @@ class PullTabController extends ChangeNotifier {
   }
 
   /// Determines if the menu is on the left edge of the screen based on its position.
-  /// Used to determine the correct animation direction based on menu alignment.
-  bool isMenuOnLeftEdge(double screenWidth) => position.dx < screenWidth / 2;
+  bool isMenuOnLeftEdge(double screenWidth) {
+    if (position.dx < screenWidth / 2) {
+      return true;
+    }
+    return false;
+  }
 }

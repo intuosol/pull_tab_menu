@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intuosol_design_system/intuosol_design_system.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:pull_tab_menu/pull_tab_menu.dart';
 
@@ -21,7 +22,7 @@ class _SketchPadState extends State<SketchPad> {
     return <PullTabMenuItem>[
       PullTabMenuItem(
         label: 'Clear',
-        icon: Icons.cleaning_services,
+        icon: Symbols.cleaning_services,
         iconColor: lines.isEmpty ? Colors.white12 : null,
         onTap:
             () => setState(() {
@@ -153,8 +154,8 @@ class _SketchPadState extends State<SketchPad> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Draw Pad')),
+    return IntuoSolScaffold(
+      appBar: AppBar(title: const Text('Sketch Pad')),
       body: PullTabMenu(
         configuration: PullTabMenuConfiguration(
           baseColor: Theme.of(context).colorScheme.primaryContainer,
@@ -162,7 +163,7 @@ class _SketchPadState extends State<SketchPad> {
           initialAlignment: MenuAlignment.topLeft,
           axis: Axis.horizontal,
           closeMenuOnTap: false,
-          useOverlay: false,
+          useBackgroundOverlay: false,
         ),
         menuItems:
             _menuIndex == 0
@@ -178,10 +179,13 @@ class _SketchPadState extends State<SketchPad> {
               height: double.infinity,
             ),
             if (lines.isEmpty)
-              const Center(
+              Center(
                 child: Text(
-                  'Pull tab to select drawing options',
-                  style: TextStyle(color: Colors.grey),
+                  'Draw on the canvas.\nOpen the menu for more options.',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelMedium!.copyWith(color: Colors.white54),
+                  textAlign: TextAlign.center,
                 ),
               ),
             GestureDetector(
@@ -204,9 +208,7 @@ class _SketchPadState extends State<SketchPad> {
                   }
                 });
               },
-              onPanEnd: (_) {
-                // No need to add any ending point
-              },
+              onPanEnd: (_) {},
               child: CustomPaint(
                 painter: DrawingPainter(lines: lines),
                 size: Size.infinite,

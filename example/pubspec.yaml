@@ -14,6 +14,7 @@ dependencies:
     path: ../
   cupertino_icons: ^1.0.6
   material_symbols_icons: ^4.2808.0
+  intuosol_design_system: ^0.2.0
 
 dev_dependencies:
   flutter_test:

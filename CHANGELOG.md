@@ -1,3 +1,18 @@
+## 0.2.0
+
+Breaking changes and significant improvements:
+
+- **Breaking**: Renamed `itemSize` to `itemExtent` for better semantics
+- **Breaking**: Renamed `allowDragging` to `allowRepositioning` for clarity
+- **Breaking**: Renamed `verticalPadding` to `margin` for consistency 
+- **Breaking**: Renamed `useOverlay` to `useBackgroundOverlay` for clarity
+- **Breaking**: Renamed `overlayOpacity` to `backgroundOverlayOpacity` for clarity
+- **Breaking**: Replaced `animationDuration` and `animationCurve` with separate show/hide animation parameters (`showDuration`, `showCurve`, `hideDuration`, `hideCurve`)
+- **Breaking**: Removed `elevation` and `maxMenuHeightFactor` parameters
+- Fixed automatic menu positioning and edge detection
+- Improved menu item rendering and tooltip positioning
+- Enhanced animation control with separate show/hide animation parameters
+
 ## 0.1.1
 
 Bug fixes and enhancements:

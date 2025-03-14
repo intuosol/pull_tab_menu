@@ -1,6 +1,6 @@
 # Pull Tab Menu
 
-A highly customizable pull tab menu system for Flutter apps with edge tab activation and animations. This package provides a flexible menu that can be pulled from the edge of the screen, with extensive customization options.
+PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.
 
 ## Features
 
@@ -141,46 +141,47 @@ The `PullTabMenuConfiguration` class provides extensive customization options:
 PullTabMenuConfiguration(
   // Menu Alignment
   initialAlignment: MenuAlignment.centerRight,
+  allowRepositioning: true,
 
   // Layout
-  axis: Axis.horizontal,
-
-  // Dimensions
-  tabWidth: 50.0,
-  tabHeight: 100.0,
-  itemSize: 48.0,
+  axis: Axis.vertical,
+  margin: 8.0,
+  borderRadius: 8.0,
+  itemExtent: 48.0,
   menuBreadth: 60.0,
 
+  // Tab Size
+  tabWidth: 40.0,
+  tabHeight: 80.0,
+
   // Colors
-  baseColor: Colors.grey[900]!,
-  tabColor: Colors.orange,
-  foregroundColor: Colors.white,
+  baseColor: null, // Defaults to theme's inverseSurface
+  tabColor: null, // Defaults to the base color
+  foregroundColor: null, // Defaults to theme's onInverseSurface
+  selectedItemBorderColor: null, // Defaults to the foreground color
+  selectedItemBackgroundColor: null, // Defaults to the base color
+  
+  // Divider Appearance
+  dividerThickness: 0.5,
+  dividerIndent: 8.0,
 
   // Opacity
   tabOpacity: 0.7,
   menuOpacity: 1.0,
-  overlayOpacity: 0.5,
-
-  // Behavior
-  autoHide: true,
-  autoHideDelay: Duration(seconds: 3),
-  closeMenuOnTap: true,
-  allowDragging: true,
-  openOnTabHover: true,
-  useOverlay: true,
+  useBackgroundOverlay: true,
+  backgroundOverlayOpacity: 0.5,
 
   // Animation
-  animationDuration: Duration(milliseconds: 400),
-  animationCurve: Curves.easeOutBack,
+  showDuration: Duration(milliseconds: 250),
+  showCurve: Curves.easeInOut,
+  hideDuration: Duration(milliseconds: 250),
+  hideCurve: Curves.easeInOut,
 
-  // Appearance
-  elevation: 8.0,
-  borderRadius: 16.0,
-  maxMenuHeightFactor: 0.7,
-
-  // Dividers
-  dividerThickness: 0.5,
-  dividerIndent: 8.0,
+  // Behavior
+  openOnTabHover: false,
+  closeMenuOnTap: true,
+  autoHide: false,
+  autoHideDelay: Duration(seconds: 3),
 );
 ```
 

@@ -107,20 +107,17 @@ void main() {
         initialAlignment: MenuAlignment.bottomLeft,
         tabColor: Colors.red,
         menuBreadth: 80.0,
-        maxMenuHeightFactor: 0.5,
       );
 
       // Original values should not change
       expect(defaultConfig.initialAlignment, MenuAlignment.centerRight);
       expect(defaultConfig.tabColor, null);
       expect(defaultConfig.menuBreadth, 60.0);
-      expect(defaultConfig.maxMenuHeightFactor, 0.9);
 
       // New values should be updated
       expect(updatedConfig.initialAlignment, MenuAlignment.bottomLeft);
       expect(updatedConfig.tabColor, Colors.red);
       expect(updatedConfig.menuBreadth, 80.0);
-      expect(updatedConfig.maxMenuHeightFactor, 0.5);
 
       // Other values should remain the same
       expect(updatedConfig.tabHeight, defaultConfig.tabHeight);
@@ -142,8 +139,7 @@ void main() {
       expect(defaultConfig.foregroundColor, null);
       expect(defaultConfig.autoHide, false);
       expect(defaultConfig.autoHideDelay, const Duration(seconds: 3));
-      expect(defaultConfig.maxMenuHeightFactor, 0.9);
-      expect(defaultConfig.itemSize, 48.0);
+      expect(defaultConfig.itemExtent, 48.0);
       expect(defaultConfig.menuBreadth, 60.0);
     });
 
@@ -160,8 +156,7 @@ void main() {
         foregroundColor: Colors.white,
         autoHide: true,
         autoHideDelay: Duration(seconds: 5),
-        maxMenuHeightFactor: 0.5,
-        itemSize: 60.0,
+        itemExtent: 60.0,
         menuBreadth: 80.0,
         dividerThickness: 1.0,
         dividerIndent: 16.0,
@@ -178,8 +173,7 @@ void main() {
       expect(customConfig.foregroundColor, Colors.white);
       expect(customConfig.autoHide, true);
       expect(customConfig.autoHideDelay, const Duration(seconds: 5));
-      expect(customConfig.maxMenuHeightFactor, 0.5);
-      expect(customConfig.itemSize, 60.0);
+      expect(customConfig.itemExtent, 60.0);
       expect(customConfig.menuBreadth, 80.0);
       expect(customConfig.dividerThickness, 1.0);
       expect(customConfig.dividerIndent, 16.0);

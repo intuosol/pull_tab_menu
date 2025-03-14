@@ -7,33 +7,33 @@ class PullTabMenuConfiguration {
   /// Creates a new menu configuration.
   const PullTabMenuConfiguration({
     this.initialAlignment = MenuAlignment.centerRight,
+    this.allowRepositioning = true,
     this.axis,
+    this.margin = 8.0,
+    this.borderRadius = 8.0,
+    this.itemExtent = 48.0,
+    this.menuBreadth = 60.0,
     this.tabWidth = 40.0,
     this.tabHeight = 80.0,
     this.baseColor,
     this.tabColor,
-    this.tabOpacity = 0.7,
-    this.menuOpacity = 1,
     this.foregroundColor,
-    this.autoHide = false,
-    this.autoHideDelay = const Duration(seconds: 3),
-    this.animationDuration = const Duration(milliseconds: 250),
-    this.animationCurve = Curves.easeInOut,
-    this.elevation = 4.0,
-    this.borderRadius = 8.0,
-    this.overlayOpacity = 0.5,
-    this.useOverlay = true,
-    this.maxMenuHeightFactor = 0.9,
-    this.itemSize = 48.0,
-    this.menuBreadth = 60.0,
-    this.closeMenuOnTap = true,
-    this.allowDragging = true,
-    this.openOnTabHover = false,
-    this.selectedItemBackgroundColor,
     this.selectedItemBorderColor,
-    this.verticalPadding = 8.0,
+    this.selectedItemBackgroundColor,
     this.dividerThickness = 0.5,
     this.dividerIndent = 8.0,
+    this.tabOpacity = 0.7,
+    this.menuOpacity = 1,
+    this.useBackgroundOverlay = true,
+    this.backgroundOverlayOpacity = 0.5,
+    this.showDuration = const Duration(milliseconds: 250),
+    this.showCurve = Curves.easeInOut,
+    this.hideDuration = const Duration(milliseconds: 250),
+    this.hideCurve = Curves.easeInOut,
+    this.openOnTabHover = false,
+    this.closeMenuOnTap = true,
+    this.autoHide = false,
+    this.autoHideDelay = const Duration(seconds: 3),
   });
 
   /// The initial alignment of the menu.
@@ -93,29 +93,29 @@ class PullTabMenuConfiguration {
   /// The delay before automatically hiding the menu.
   final Duration autoHideDelay;
 
-  /// The duration of the show/hide animations.
-  final Duration animationDuration;
+  /// The duration of the show animation.
+  final Duration showDuration;
 
-  /// The curve used for the show/hide animations.
-  final Curve animationCurve;
+  /// The duration of the hide animation.
+  final Duration hideDuration;
 
-  /// The elevation of the menu panel.
-  final double elevation;
+  /// The curve used for the show animation.
+  final Curve showCurve;
+
+  /// The curve used for the hide animation.
+  final Curve hideCurve;
 
   /// The border radius of the menu panel and tab.
   final double borderRadius;
 
   /// The opacity of the overlay when the menu is open.
-  final double overlayOpacity;
+  final double backgroundOverlayOpacity;
 
-  /// Whether to show an overlay when the menu is open.
-  final bool useOverlay;
+  /// Whether to show a background overlay when the menu is open
+  final bool useBackgroundOverlay;
 
-  /// Maximum menu height as a factor of screen height (0.0 to 1.0)
-  final double maxMenuHeightFactor;
-
-  /// The size of each item in the menu
-  final double itemSize;
+  /// The extent of each item in the menu
+  final double itemExtent;
 
   /// The breadth of the menu
   final double menuBreadth;
@@ -123,8 +123,8 @@ class PullTabMenuConfiguration {
   /// Close the menu when an item is tapped
   final bool closeMenuOnTap;
 
-  /// Allow dragging of the tab
-  final bool allowDragging;
+  /// Allow repositioning of the menu by dragging the tab
+  final bool allowRepositioning;
 
   /// Open when hovering over the tab
   final bool openOnTabHover;
@@ -135,8 +135,8 @@ class PullTabMenuConfiguration {
   /// Border color for selected menu items (null uses [foregroundColor])
   final Color? selectedItemBorderColor;
 
-  /// Vertical padding for the menu
-  final double verticalPadding;
+  /// The margin around the menu
+  final double margin;
 
   /// Thickness of dividers in the menu
   final double dividerThickness;
@@ -157,25 +157,21 @@ class PullTabMenuConfiguration {
     Color? foregroundColor,
     bool? autoHide,
     Duration? autoHideDelay,
-    Duration? animationDuration,
-    Curve? animationCurve,
-    double? elevation,
-    Duration? sizeDuration,
+    Duration? showDuration,
+    Duration? hideDuration,
+    Curve? showCurve,
+    Curve? hideCurve,
     double? borderRadius,
-    double? overlayOpacity,
-    bool? useOverlay,
-    double? maxMenuWidthFactor,
-    double? maxMenuHeightFactor,
-    double? minMenuSize,
-    double? itemSize,
+    double? backgroundOverlayOpacity,
+    bool? useBackgroundOverlay,
+    double? itemExtent,
     double? menuBreadth,
     bool? closeMenuOnTap,
-    bool? allowDragging,
+    bool? allowRepositioning,
     bool? openOnTabHover,
-    bool? closeOnHoverExit,
     Color? selectedItemBackgroundColor,
     Color? selectedItemBorderColor,
-    double? verticalPadding,
+    double? margin,
     double? dividerThickness,
     double? dividerIndent,
   }) {
@@ -191,23 +187,24 @@ class PullTabMenuConfiguration {
       foregroundColor: foregroundColor ?? this.foregroundColor,
       autoHide: autoHide ?? this.autoHide,
       autoHideDelay: autoHideDelay ?? this.autoHideDelay,
-      animationDuration: animationDuration ?? this.animationDuration,
-      animationCurve: animationCurve ?? this.animationCurve,
-      elevation: elevation ?? this.elevation,
+      showDuration: showDuration ?? this.showDuration,
+      hideDuration: hideDuration ?? this.hideDuration,
+      showCurve: showCurve ?? this.showCurve,
+      hideCurve: hideCurve ?? this.hideCurve,
       borderRadius: borderRadius ?? this.borderRadius,
-      overlayOpacity: overlayOpacity ?? this.overlayOpacity,
-      useOverlay: useOverlay ?? this.useOverlay,
-      maxMenuHeightFactor: maxMenuHeightFactor ?? this.maxMenuHeightFactor,
-      itemSize: itemSize ?? this.itemSize,
+      backgroundOverlayOpacity:
+          backgroundOverlayOpacity ?? this.backgroundOverlayOpacity,
+      useBackgroundOverlay: useBackgroundOverlay ?? this.useBackgroundOverlay,
+      itemExtent: itemExtent ?? this.itemExtent,
       menuBreadth: menuBreadth ?? this.menuBreadth,
       closeMenuOnTap: closeMenuOnTap ?? this.closeMenuOnTap,
-      allowDragging: allowDragging ?? this.allowDragging,
+      allowRepositioning: allowRepositioning ?? this.allowRepositioning,
       openOnTabHover: openOnTabHover ?? this.openOnTabHover,
       selectedItemBackgroundColor:
           selectedItemBackgroundColor ?? this.selectedItemBackgroundColor,
       selectedItemBorderColor:
           selectedItemBorderColor ?? this.selectedItemBorderColor,
-      verticalPadding: verticalPadding ?? this.verticalPadding,
+      margin: margin ?? this.margin,
       dividerThickness: dividerThickness ?? this.dividerThickness,
       dividerIndent: dividerIndent ?? this.dividerIndent,
     );

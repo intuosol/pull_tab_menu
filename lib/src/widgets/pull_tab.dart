@@ -10,6 +10,7 @@ class PullTab extends StatelessWidget {
     super.key,
     required this.configuration,
     required this.controller,
+    required this.isLeftEdge,
     required this.onTap,
     required this.onDragStart,
     required this.onDragUpdate,
@@ -21,6 +22,9 @@ class PullTab extends StatelessWidget {
 
   /// The controller for the tab.
   final PullTabController controller;
+
+  /// Whether the menu is on the left edge of the screen.
+  final bool isLeftEdge;
 
   /// Callback function when the tab is tapped.
   final VoidCallback onTap;
@@ -44,62 +48,63 @@ class PullTab extends StatelessWidget {
     }
   }
 
+  BorderRadius get borderRadius {
+    if (isLeftEdge) {
+      return BorderRadius.only(
+        topRight: Radius.circular(configuration.borderRadius),
+        bottomRight: Radius.circular(configuration.borderRadius),
+      );
+    }
+    return BorderRadius.only(
+      topLeft: Radius.circular(configuration.borderRadius),
+      bottomLeft: Radius.circular(configuration.borderRadius),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final bool menuOnLeftEdge = controller.isMenuOnLeftEdge(
-      MediaQuery.of(context).size.width,
-    );
-
-    // When the tab is connected to the menu, we need to round only the outer corners
-    // The side touching the menu should never have a border radius
-    final BorderRadius borderRadius =
-        menuOnLeftEdge
-            ? BorderRadius.only(
-              topRight: Radius.circular(configuration.borderRadius),
-              bottomRight: Radius.circular(configuration.borderRadius),
-            )
-            : BorderRadius.only(
-              topLeft: Radius.circular(configuration.borderRadius),
-              bottomLeft: Radius.circular(configuration.borderRadius),
-            );
-
-    return GestureDetector(
-      onTap: onTap,
-      onPanStart: (_) => onDragStart(),
-      onPanUpdate: onDragUpdate,
-      onPanEnd: (_) => onDragEnd(),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: configuration.tabWidth,
-        height: tabHeight,
-        decoration: BoxDecoration(
-          color: configuration
-              .getTabColor(context)
-              .withValues(
-                alpha:
-                    controller.isMenuOpen
-                        ? configuration.menuOpacity
-                        : configuration.tabOpacity,
+    return MouseRegion(
+      cursor:
+          controller.isDragging
+              ? SystemMouseCursors.grabbing
+              : SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        onPanStart: (_) => onDragStart(),
+        onPanUpdate: onDragUpdate,
+        onPanEnd: (_) => onDragEnd(),
+        child: Container(
+          width: configuration.tabWidth,
+          height: tabHeight,
+          decoration: BoxDecoration(
+            color: configuration
+                .getTabColor(context)
+                .withValues(
+                  alpha:
+                      controller.isMenuOpen
+                          ? configuration.menuOpacity
+                          : configuration.tabOpacity,
+                ),
+            borderRadius: borderRadius,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                spreadRadius: 1,
+                blurRadius: 4,
+                offset: const Offset(0, 2),
               ),
-          borderRadius: borderRadius,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.3),
-              spreadRadius: 1,
-              blurRadius: 4,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: AnimatedRotation(
-            duration: Durations.short2,
-            turns: controller.isMenuOpen ? 0.5 : 0,
-            child: Icon(
-              menuOnLeftEdge ? Icons.chevron_right : Icons.chevron_left,
-              color: configuration.getForegroundColor(context),
-              size: 28,
+            ],
+          ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: AnimatedRotation(
+              duration: Durations.short2,
+              turns: controller.isMenuOpen ? 0.5 : 0,
+              child: Icon(
+                isLeftEdge ? Icons.chevron_right : Icons.chevron_left,
+                color: configuration.getForegroundColor(context),
+                size: 28,
+              ),
             ),
           ),
         ),

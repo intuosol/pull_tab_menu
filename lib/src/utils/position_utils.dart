@@ -15,25 +15,27 @@ class PositionUtils {
   }) {
     double left = 0;
     double top = 0;
+
+    final double menuCenter = menuLength / 2;
     switch (alignment) {
       case MenuAlignment.topLeft:
         left = 0;
-        top = 0;
-      case MenuAlignment.centerLeft:
-        left = 0;
-        top = (screenSize.height - menuLength) / 2;
-      case MenuAlignment.bottomLeft:
-        left = 0;
-        top = screenSize.height;
+        top = menuCenter;
       case MenuAlignment.topRight:
         left = screenSize.width - totalWidth;
-        top = 0;
+        top = menuCenter;
+      case MenuAlignment.centerLeft:
+        left = 0;
+        top = screenSize.height / 2;
       case MenuAlignment.centerRight:
         left = screenSize.width - totalWidth;
-        top = (screenSize.height - menuLength) / 2;
+        top = screenSize.height / 2;
+      case MenuAlignment.bottomLeft:
+        left = 0;
+        top = screenSize.height - menuCenter;
       case MenuAlignment.bottomRight:
         left = screenSize.width - totalWidth;
-        top = screenSize.height;
+        top = screenSize.height - menuCenter;
     }
 
     return Offset(left, top);
