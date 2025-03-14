@@ -1,0 +1,61 @@
+name: Build & Deploy Example App
+
+on:
+  # Disabled for manual running of the workflow
+  workflow_dispatch:
+
+#  push:
+#    branches: [main]
+#    paths:
+#      - 'example'
+#      - '!**.md' # ignore the readme files
+
+jobs:
+  build-and-deploy:
+    name: "Build & Deploy web app"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Install Flutter and Dart SDK"
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: "Show Flutter SDK version"
+        run: flutter --version
+
+      - name: "Flutter enable Web"
+        run: flutter config --enable-web
+
+      - name: "Flutter clean before build"
+        run: |
+          flutter clean
+          cd example
+          flutter clean
+
+      - name: "Get dependencies"
+        run: flutter pub get
+        working-directory: example
+
+      - name: "Show outdated packages"
+        run: flutter pub outdated
+
+      - name: "Create web directory"
+        run: |
+          cd example
+          flutter create --platforms=web .
+
+      - name: "Build web app"
+        run: |
+          cd example
+          flutter build web --base-href='/pull_tab_menu/'
+
+      - name: "Deploy web app"
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: "example/build/web"
+          single-commit: true

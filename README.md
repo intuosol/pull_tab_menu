@@ -1,6 +1,16 @@
-# Pull Tab Menu
+# Pull Tab Menu <img src="https://raw.githubusercontent.com/intuosol/intuosol_design_system/main/assets/logos/by_intuosol.png" alt="Icon" width="250" style="margin-left: 10px;">
+
+[![platform](https://img.shields.io/badge/platform-flutter-blue.svg)](https://flutter.dev)
+[![pub package](https://img.shields.io/pub/v/pull_tab_menu.svg)](https://pub.dev/packages/pull_tab_menu)
+[![pub points](https://img.shields.io/pub/points/pull_tab_menu)](https://pub.dev/packages/pull_tab_menu/score)
+[![documentation](https://img.shields.io/badge/api-documentation-blue.svg)](https://pub.dev/documentation/pull_tab_menu)
+[![interactive demo](https://img.shields.io/badge/interactive-demo-white.svg)](https://intuosol.github.io/pull_tab_menu/)
+[![last updated](https://img.shields.io/github/last-commit/intuosol/pull_tab_menu.svg)](https://github.com/intuosol/pull_tab_menu/commits/main)
+[![by](https://img.shields.io/badge/by-IntuoSol-success.svg)](https://intuosol.com)
 
 PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.
+
+Try it out in the [example app](https://intuosol.github.io/pull_tab_menu/).
 
 ## Features
 
@@ -19,7 +29,6 @@ PullTabMenu brings elegant context menus to Flutter apps through a discreet, pul
 - Smart automatic layout selection based on item count
 - Programmatic control via controller
 - Customizable colors, opacity, and dimensions
-- Elevation and border radius styling options
 
 ## Usage
 
@@ -160,7 +169,7 @@ PullTabMenuConfiguration(
   foregroundColor: null, // Defaults to theme's onInverseSurface
   selectedItemBorderColor: null, // Defaults to the foreground color
   selectedItemBackgroundColor: null, // Defaults to the base color
-  
+
   // Divider Appearance
   dividerThickness: 0.5,
   dividerIndent: 8.0,
