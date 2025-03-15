@@ -13,6 +13,14 @@ topics:
 example:
   path: example
 
+screenshots:
+  - description: Basic Example
+    path: showcase/basic.gif
+  - description: Sketch Pad Example
+    path: showcase/sketch_pad.gif
+  - description: Customizer
+    path: showcase/customizer.gif
+
 environment:
   sdk: ^3.7.0
   flutter: ">=1.17.0"

@@ -1,4 +1,4 @@
-# Pull Tab Menu <img src="https://raw.githubusercontent.com/intuosol/intuosol_design_system/main/assets/logos/by_intuosol.png" alt="Icon" width="250" style="margin-left: 10px;">
+# Pull Tab Menu <img src="https://raw.githubusercontent.com/intuosol/intuosol_design_system/main/assets/logos/by_intuosol.png" alt="Icon" width="250" style="margin-left: 20px;">
 
 [![platform](https://img.shields.io/badge/platform-flutter-blue.svg)](https://flutter.dev)
 [![pub package](https://img.shields.io/pub/v/pull_tab_menu.svg)](https://pub.dev/packages/pull_tab_menu)
@@ -11,6 +11,9 @@
 PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.
 
 Try it out in the [example app](https://intuosol.github.io/pull_tab_menu/).
+
+| ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/basic.gif) | ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/sketch_pad.gif) | ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/customizer.gif) |
+| :-----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
 
 ## Features
 
