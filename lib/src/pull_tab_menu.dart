@@ -50,6 +50,12 @@ class _PullTabMenuState extends State<PullTabMenu>
   late double _totalWidth;
   late double _calculatedMenuLength;
 
+  /// The number of non-divider items in the menu
+  int get _numberOfActionItems =>
+      _controller.menuItems
+          .where((PullTabMenuItem item) => !item.isDivider)
+          .length;
+
   @override
   void initState() {
     super.initState();
@@ -192,14 +198,16 @@ class _PullTabMenuState extends State<PullTabMenu>
   }
 
   void _assignAxis() {
-    final bool forceHorizontal = widget.menuItems.length == 1;
-    final bool shouldUseHorizontal = widget.menuItems.length < 4;
+    final bool forceHorizontal = _numberOfActionItems == 1;
+    final bool shouldUseHorizontal = _numberOfActionItems < 4;
     final bool isAxisExplicitlySet = widget.configuration.axis != null;
 
     if (forceHorizontal || (shouldUseHorizontal && !isAxisExplicitlySet)) {
       _configuration = widget.configuration.copyWith(axis: Axis.horizontal);
-    } else {
+    } else if (widget.configuration.axis != null) {
       _configuration = widget.configuration;
+    } else {
+      _configuration = widget.configuration.copyWith(axis: Axis.vertical);
     }
   }
 
@@ -302,7 +310,7 @@ class _PullTabMenuState extends State<PullTabMenu>
   @override
   Widget build(BuildContext context) {
     // If no menu items are provided, return the child widget
-    if (_controller.menuItems.isEmpty) {
+    if (_numberOfActionItems == 0) {
       return widget.child;
     }
 

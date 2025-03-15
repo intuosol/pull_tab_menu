@@ -39,8 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // Give the user a quick peek of the menu to show they can open/close it
     Future<void>.delayed(Durations.short2, () => _controller.openMenu()).then(
-      (_) =>
-          Future<void>.delayed(Durations.long4, () => _controller.closeMenu()),
+      (_) => Future<void>.delayed(
+        Durations.extralong2,
+        () => _controller.closeMenu(),
+      ),
     );
     super.initState();
   }
@@ -66,6 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icons.style_outlined,
             onTap: () {
               Navigator.pushNamed(context, '/customizer');
+            },
+          ),
+          const PullTabMenuItem.divider(),
+          PullTabMenuItem(
+            label: 'Pub.dev',
+            icon: Symbols.package_2,
+            onTap: () {
+              RedirectHandler.openPackage('pull_tab_menu');
+            },
+          ),
+          const PullTabMenuItem.divider(),
+          PullTabMenuItem(
+            label: 'API Reference',
+            icon: Symbols.docs,
+            onTap: () {
+              RedirectHandler.openPackageDocumentation('pull_tab_menu');
             },
           ),
         ],

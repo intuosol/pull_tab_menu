@@ -1,10 +1,16 @@
+## 0.2.1
+
+Bug fixes:
+
+- Fixed issue with automatic assigning of the menu axis based on item count
+
 ## 0.2.0
 
 Breaking changes and significant improvements:
 
 - **Breaking**: Renamed `itemSize` to `itemExtent` for better semantics
 - **Breaking**: Renamed `allowDragging` to `allowRepositioning` for clarity
-- **Breaking**: Renamed `verticalPadding` to `margin` for consistency 
+- **Breaking**: Renamed `verticalPadding` to `margin` for consistency
 - **Breaking**: Renamed `useOverlay` to `useBackgroundOverlay` for clarity
 - **Breaking**: Renamed `overlayOpacity` to `backgroundOverlayOpacity` for clarity
 - **Breaking**: Replaced `animationDuration` and `animationCurve` with separate show/hide animation parameters (`showDuration`, `showCurve`, `hideDuration`, `hideCurve`)

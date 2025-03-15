@@ -1,6 +1,6 @@
 name: pull_tab_menu
 description: "PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced."
-version: 0.2.0
+version: 0.2.1
 homepage: https://github.com/intuosol/pull_tab_menu
 repository: https://github.com/intuosol/pull_tab_menu
 topics:
