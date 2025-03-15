@@ -12,8 +12,8 @@ PullTabMenu brings elegant context menus to Flutter apps through a discreet, pul
 
 Try it out in the [example app](https://intuosol.github.io/pull_tab_menu/).
 
-| ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/basic.gif) | ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/sketch_pad.gif) | ![](https://raw.githubusercontent.com/intuosol/pull_tab_menu/main/showcase/customizer.gif) |
-| :-----------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------: |
+| <img src="./showcase/basic.gif" width="250"> | <img src="./showcase/sketch_pad.gif" width="250"> | <img src="./showcase/customizer.gif" width="250"> |
+| :------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
 
 ## Features
 
