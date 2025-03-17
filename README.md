@@ -8,17 +8,17 @@
 [![last updated](https://img.shields.io/github/last-commit/intuosol/pull_tab_menu.svg)](https://github.com/intuosol/pull_tab_menu/commits/main)
 [![by](https://img.shields.io/badge/by-IntuoSol-success.svg)](https://intuosol.com)
 
-PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.
+Elegant context menus for Flutter apps via a discreet pull-out tab. Preserves clean aesthetics while providing quick access to actions.
 
-Try it out in the [example app](https://intuosol.github.io/pull_tab_menu/).
+Try it out in the [demo app](https://intuosol.github.io/pull_tab_menu/).
 
 | <img src="./showcase/basic.gif" width="250"> | <img src="./showcase/sketch_pad.gif" width="250"> | <img src="./showcase/customizer.gif" width="250"> |
-| :------------------------------------------: | :----------------------------------------------: | :----------------------------------------------: |
+| :------------------------------------------: | :-----------------------------------------------: | :-----------------------------------------------: |
 
 ## Features
 
 - Edge-anchored pull tab with customizable appearance
-- Multiple menu positions (centerLeft, centerRight, topLeft, topRight, bottomLeft, bottomRight)
+- Multiple initial menu positions (centerLeft, centerRight, topLeft, topRight, bottomLeft, bottomRight)
 - Slide-out menu with smooth animations
 - Support for both vertical and horizontal menu layouts
 - Menu items with icons, tooltips, and tap actions
@@ -199,7 +199,7 @@ PullTabMenuConfiguration(
 
 ## Menu Alignments
 
-The menu can be positioned at various points along the screen edges:
+The initial menu can be positioned at various points along the screen edges:
 
 - `MenuAlignment.topLeft`
 - `MenuAlignment.centerLeft`

@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Revised package description and screenshots
+
 ## 0.2.1
 
 Bug fixes:
