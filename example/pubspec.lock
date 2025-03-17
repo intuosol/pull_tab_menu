@@ -374,7 +374,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.1"
+    version: "0.2.2"
   screenshot:
     dependency: transitive
     description:
@@ -536,10 +536,10 @@ packages:
     dependency: "direct main"
     description:
       name: widget_snippet
-      sha256: "5426240c2517059c920381f34ad78ab70f170f122f85ed76832a50ca75f11824"
+      sha256: "386f2fe020dc3c0027c670812ddb11c42cd347197941c990c5cd95413aba38cc"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0"
+    version: "0.1.1"
   xdg_directories:
     dependency: transitive
     description:

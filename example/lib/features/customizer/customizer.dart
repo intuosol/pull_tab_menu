@@ -127,7 +127,7 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
         menuItems: _menuItems,
         configuration: _configuration,
       ),
-      config: WidgetSnippetConfig(title: 'Pull Tab Menu Snippet'),
+      config: WidgetSnippetConfig(title: 'Configuration Code Snippet'),
     );
   }
 

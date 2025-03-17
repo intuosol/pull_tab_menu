@@ -1,7 +1,6 @@
 name: pull_tab_menu_example
 description: Example application for the pull_tab_menu package.
 publish_to: "none"
-version: 1.0.0+1
 
 environment:
   sdk: ^3.7.0
@@ -15,7 +14,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   material_symbols_icons: ^4.2808.0
   intuosol_design_system: ^0.3.0
-  widget_snippet: ^0.1.0
+  widget_snippet: ^0.1.1
 
 dev_dependencies:
   flutter_test:
