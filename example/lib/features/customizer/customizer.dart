@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intuosol_design_system/intuosol_design_system.dart';
 import 'package:pull_tab_menu/pull_tab_menu.dart';
+import 'package:widget_snippet/widget_snippet.dart';
 
+import 'customized_source_code.dart';
 import 'widgets/config_menus/animation_config.dart';
 import 'widgets/config_menus/behavior_config.dart';
 import 'widgets/config_menus/colors_config.dart';
@@ -11,6 +13,7 @@ import 'widgets/config_menus/menu_layout_config.dart';
 import 'widgets/config_menus/opacity_config.dart';
 import 'widgets/config_menus/tab_size_config.dart';
 import 'widgets/custom_snackbar.dart';
+import 'widgets/pull_tab_menu_preview.dart';
 
 // Example with customization
 class PullTabMenuCustomizer extends StatefulWidget {
@@ -35,6 +38,15 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
   static const Curve kDefaultShowCurve = Curves.bounceOut;
   static const Duration kDefaultShowDuration = Duration(milliseconds: 500);
   static const bool kDefaultUseBackgroundOverlay = false;
+
+  /// String representation of the curves (for source code generation)
+  String _showCurveAsString = 'bounceOut';
+  String _hideCurveAsString = 'easeInOut';
+
+  /// String representation of the colors (for source code generation)
+  String _baseColorAsString = 'null';
+  String _tabColorAsString = 'null';
+  String _foregroundColorAsString = 'null';
 
   @override
   void initState() {
@@ -61,9 +73,14 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final List<PullTabMenuItem> menuItems = <PullTabMenuItem>[
+  List<PullTabMenuItem> get _menuItems {
+    return <PullTabMenuItem>[
+      PullTabMenuItem(
+        label: 'Widget Snippet',
+        icon: Icons.code,
+        onTap: _showWidgetSnippet,
+      ),
+      const PullTabMenuItem.divider(),
       PullTabMenuItem(
         label: 'Reset All Settings',
         icon: Icons.restart_alt,
@@ -85,13 +102,6 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
         },
       ),
       PullTabMenuItem(
-        label: 'Search',
-        icon: Icons.search,
-        onTap: () {
-          CustomSnackBar.of(context).showMessage('Search tapped');
-        },
-      ),
-      PullTabMenuItem(
         label: 'Profile',
         icon: Icons.person,
         onTap: () {
@@ -99,11 +109,34 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
         },
       ),
     ];
+  }
 
+  /// View Widget Snippet
+  void _showWidgetSnippet() {
+    WidgetSnippet.showModal(
+      context: context,
+      sourceCode: SourceCodeGenerator.getConfigSourceCode(
+        configuration: _configuration,
+        showCurveAsString: _showCurveAsString,
+        hideCurveAsString: _hideCurveAsString,
+        baseColorAsString: _baseColorAsString,
+        tabColorAsString: _tabColorAsString,
+        foregroundColorAsString: _foregroundColorAsString,
+      ),
+      widget: PullTabMenuPreview(
+        menuItems: _menuItems,
+        configuration: _configuration,
+      ),
+      config: WidgetSnippetConfig(title: 'Pull Tab Menu Snippet'),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return IntuoSolScaffold(
       appBar: AppBar(title: const Text('Pull Tab Menu Customizer')),
       body: PullTabMenu(
-        menuItems: menuItems,
+        menuItems: _menuItems,
         controller: _controller,
         configuration: _configuration,
         child: SingleChildScrollView(
@@ -181,6 +214,17 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
                     onConfigChange:
                         (PullTabMenuConfiguration newConfiguration) =>
                             setState(() => _configuration = newConfiguration),
+                    onColorChange: ({
+                      required String baseColorAsString,
+                      required String tabColorAsString,
+                      required String foregroundColorAsString,
+                    }) {
+                      setState(() {
+                        _baseColorAsString = baseColorAsString;
+                        _tabColorAsString = tabColorAsString;
+                        _foregroundColorAsString = foregroundColorAsString;
+                      });
+                    },
                     onReset:
                         () => setState(
                           () =>
@@ -238,6 +282,15 @@ class _PullTabMenuCustomizerState extends State<PullTabMenuCustomizer> {
                     onConfigChange:
                         (PullTabMenuConfiguration newConfiguration) =>
                             setState(() => _configuration = newConfiguration),
+                    onCurveChange: ({
+                      required String showCurveAsString,
+                      required String hideCurveAsString,
+                    }) {
+                      setState(() {
+                        _showCurveAsString = showCurveAsString;
+                        _hideCurveAsString = hideCurveAsString;
+                      });
+                    },
                     onReset:
                         () => setState(
                           () =>

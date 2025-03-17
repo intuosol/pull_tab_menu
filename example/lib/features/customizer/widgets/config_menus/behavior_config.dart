@@ -55,7 +55,7 @@ class BehaviorConfig extends StatelessWidget {
                   onConfigChange(configuration.copyWith(autoHide: value)),
         ),
         ConfigMenuSlider(
-          title: 'Auto Hide Delay',
+          title: 'Auto Hide Delay (s)',
           subtitle: 'Ignored when auto hide is disabled.',
           value: configuration.autoHideDelay.inSeconds.toDouble(),
           min: 1,

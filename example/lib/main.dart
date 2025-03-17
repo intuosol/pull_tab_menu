@@ -15,10 +15,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntuoSolApp(
-      title: 'Pull Tab Menu Example',
+      title: 'Pull Tab Menu Demo',
       home: const MyHomePage(),
       routes: <String, WidgetBuilder>{
-        '/customizer': (BuildContext context) => const PullTabMenuCustomizer(),
+        '/customizer-playground':
+            (BuildContext context) => const PullTabMenuCustomizer(),
         '/sketchpad': (BuildContext context) => const SketchPad(),
       },
     );
@@ -51,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     // The actual implementation
     return IntuoSolScaffold(
-      appBar: AppBar(title: const Text('Pull Tab Menu')),
+      appBar: AppBar(title: const Text('Pull Tab Menu Demo')),
       body: PullTabMenu(
         controller: _controller,
         menuItems: <PullTabMenuItem>[
@@ -64,10 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const PullTabMenuItem.divider(),
           PullTabMenuItem(
-            label: 'Customizer',
+            label: 'Customizer Playground',
             icon: Icons.style_outlined,
             onTap: () {
-              Navigator.pushNamed(context, '/customizer');
+              Navigator.pushNamed(context, '/customizer-playground');
             },
           ),
           const PullTabMenuItem.divider(),
@@ -99,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: <Widget>[
                   const SizedBox(height: 24),
                   const IntuoSolSectionHeader(
-                    title: 'Select an Example',
+                    title: 'Select a Demo',
                     padding: EdgeInsets.symmetric(vertical: 16.0),
                   ),
                   _buildMenuOption(
@@ -112,10 +113,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   _buildMenuOption(
                     context: context,
-                    title: 'Customizer',
+                    title: 'Customizer Playground',
                     icon: Icons.style_outlined,
                     subtitle: 'Customize the menu appearance and behavior.',
-                    onTap: () => Navigator.pushNamed(context, '/customizer'),
+                    onTap:
+                        () => Navigator.pushNamed(
+                          context,
+                          '/customizer-playground',
+                        ),
                   ),
                   const SizedBox(height: 24),
                   const IntuoSolSectionHeader(
@@ -149,7 +154,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         packageName: 'pull_tab_menu',
         description:
-            "PullTabMenu brings elegant context menus to Flutter apps through a discreet, pull-out tab interface. Preserve your interface's clean aesthetic while providing immediate access to actions when users need them. Perfect for creative applications where screen space and functionality must be balanced.",
+            'Elegant context menus for Flutter apps via a discreet pull-out tab. Preserves clean aesthetics while providing quick access to actions.',
       ),
     );
   }
