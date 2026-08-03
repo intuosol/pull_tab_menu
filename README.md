@@ -8,6 +8,8 @@
 [![last updated](https://img.shields.io/github/last-commit/intuosol/pull_tab_menu.svg)](https://github.com/intuosol/pull_tab_menu/commits/main)
 [![by](https://img.shields.io/badge/by-IntuoSol-success.svg)](https://intuosol.com)
 
+> ⚠️ **Experimental & Under Review:** This package is undergoing structural review for Flutter package best practices and architectural standards. API breaking changes or major refactoring may occur in future updates.
+
 Elegant context menus for Flutter apps via a discreet pull-out tab. Preserves clean aesthetics while providing quick access to actions.
 
 Try it out in the [demo app](https://intuosol.github.io/pull_tab_menu/).
